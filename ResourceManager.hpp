@@ -7,7 +7,7 @@ class ResourceManager
 public:
     ResourceManager() : resource_() {}
 
-    double get() const { return resource_.get(); }
+    double get() const { return const_cast< Resource& >(resource_).get(); }
 
     // Dobre zdefiniowane metody specjalne:
 
