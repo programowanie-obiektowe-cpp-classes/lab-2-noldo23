@@ -11,7 +11,7 @@ public:
     double get() const { return resource_->get(); }
 
     // Domyœlny konstruktor
-    ResourceManager() = default;
+    //ResourceManager() = default;
 
     // Domyœlny destruktor
     ~ResourceManager() = default;
