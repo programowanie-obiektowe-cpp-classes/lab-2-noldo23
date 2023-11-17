@@ -4,49 +4,40 @@
 
 class ResourceManager
 {
-private:
-    Resource resource; // Zarz¹dzany zasób
-
 public:
-    ResourceManager();  // Konstruktor domyœlny
-    ~ResourceManager(); // Destruktor
+    ResourceManager() : resource_() {}
 
-    double get() const; // Metoda zwracaj¹ca wynik zasobu
+    double get() const { return resource_.get(); }
 
-    // Dodaj pozosta³e metody specjalne wed³ug potrzeb
-    ResourceManager(const ResourceManager& other);            // Konstruktor kopiuj¹cy
-    ResourceManager& operator=(const ResourceManager& other); // Operator przypisania
-};
+    // Dobre zdefiniowane metody specjalne:
 
-// ResourceManager.cpp
-#include "ResourceManager.hpp"
-
-ResourceManager::ResourceManager()
-{
-    // Konstruktor domyœlny
-}
-
-ResourceManager::~ResourceManager()
-{
-    // Destruktor
-}
-
-double ResourceManager::get() const
-{
-    // Przekazanie wywo³ania metody get do zarz¹dzanego zasobu
-    return resource.get();
-}
-
-ResourceManager::ResourceManager(const ResourceManager& other) : resource(other.resource)
-{
     // Konstruktor kopiuj¹cy
-}
+    ResourceManager(const ResourceManager& other) : resource_(other.resource_) {}
 
-ResourceManager& ResourceManager::operator=(const ResourceManager& other)
-{
     // Operator przypisania
-    if (this != &other) {
-        resource = other.resource;
+    ResourceManager& operator=(const ResourceManager& other)
+    {
+        if (this != &other) {
+            resource_ = other.resource_;
+        }
+        return *this;
     }
-    return *this;
+
+    // Konstruktor przenosz¹cy
+    ResourceManager(ResourceManager&& other) noexcept : resource_(std::move(other.resource_)) {}
+
+    // Operator przypisania przenosz¹cy
+    ResourceManager& operator=(ResourceManager&& other) noexcept
+    {
+        if (this != &other) {
+            resource_ = std::move(other.resource_);
+        }
+        return *this;
+    }
+
+    // Destruktor
+    ~ResourceManager() = default;
+
+private:
+    Resource resource_;
 };
