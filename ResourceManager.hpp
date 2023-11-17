@@ -4,51 +4,49 @@
 
 class ResourceManager
 {
-public:
-    Resource()
-    {
-        // Konstruktor domyœlny symuluj¹cy kosztown¹ inicjalizacjê zasobu
-        std::cout << "Resource constructed" << std::endl;
-    }
-
-    ~Resource()
-    {
-        // Destruktor symuluj¹cy zwolnienie zasobu
-        std::cout << "Resource destroyed" << std::endl;
-    }
-
-    double get() const
-    {
-        // Symulacja u¿ycia zasobu
-        return 42.0; // Symulacyjna wartoœæ
-    }
-
-    // Dodaj pozosta³e metody specjalne wed³ug potrzeb
-};
-
-class ResourceManager
-{
 private:
     Resource resource; // Zarz¹dzany zasób
 
 public:
-    ResourceManager()
-    {
-        // Konstruktor domyœlny
-        std::cout << "ResourceManager constructed" << std::endl;
-    }
+    ResourceManager();  // Konstruktor domyœlny
+    ~ResourceManager(); // Destruktor
 
-    ~ResourceManager()
-    {
-        // Destruktor, który automatycznie zwolni zarz¹dzany zasób
-        std::cout << "ResourceManager destroyed" << std::endl;
-    }
+    double get() const; // Metoda zwracaj¹ca wynik zasobu
 
-    double get() const
-    {
-        // Przekazanie wywo³ania metody get do zarz¹dzanego zasobu
-        return resource.get();
-    }
+    // Dodaj pozosta³e metody specjalne wed³ug potrzeb
+    ResourceManager(const ResourceManager& other);            // Konstruktor kopiuj¹cy
+    ResourceManager& operator=(const ResourceManager& other); // Operator przypisania
+};
 
-    // Dodaj pozosta³e metody specjalne wed³ug potrzeb  // Twoja implementacja tutaj
+// ResourceManager.cpp
+#include "ResourceManager.hpp"
+
+ResourceManager::ResourceManager()
+{
+    // Konstruktor domyœlny
+}
+
+ResourceManager::~ResourceManager()
+{
+    // Destruktor
+}
+
+double ResourceManager::get() const
+{
+    // Przekazanie wywo³ania metody get do zarz¹dzanego zasobu
+    return resource.get();
+}
+
+ResourceManager::ResourceManager(const ResourceManager& other) : resource(other.resource)
+{
+    // Konstruktor kopiuj¹cy
+}
+
+ResourceManager& ResourceManager::operator=(const ResourceManager& other)
+{
+    // Operator przypisania
+    if (this != &other) {
+        resource = other.resource;
+    }
+    return *this;
 };
