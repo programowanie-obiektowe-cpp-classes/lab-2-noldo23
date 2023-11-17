@@ -1,43 +1,38 @@
 #pragma once
 
 #include "Resource.hpp"
+#include <memory>
 
 class ResourceManager
 {
 public:
-    ResourceManager() : resource_() {}
+    ResourceManager() : resource_(std::make_unique< Resource >()) {}
 
-    double get() const { return const< Resource& >(resource_).get(); }
+    double get() const { return resource_->get(); }
 
-    // Dobre zdefiniowane metody specjalne:
+    // Domyœlny konstruktor
+    ResourceManager() = default;
+
+    // Domyœlny destruktor
+    ~ResourceManager() = default;
 
     // Konstruktor kopiuj¹cy
-    ResourceManager(const ResourceManager& other) : resource_(other.resource_) {}
+    ResourceManager(const ResourceManager& other)
+        : resource_(std::make_unique< Resource >(*other.resource_))
+    {}
 
-    // Operator przypisania
+    // Operator przypisania kopiuj¹cy
     ResourceManager& operator=(const ResourceManager& other)
     {
         if (this != &other) {
-            resource_ = other.resource_;
+            resource_ = std::make_unique< Resource >(*other.resource_);
         }
         return *this;
     }
-
-    // Konstruktor przenosz¹cy
-    ResourceManager(ResourceManager&& other) noexcept : resource_(std::move(other.resource_)) {}
 
     // Operator przypisania przenosz¹cy
-    ResourceManager& operator=(ResourceManager&& other) noexcept
-    {
-        if (this != &other) {
-            resource_ = std::move(other.resource_);
-        }
-        return *this;
-    }
-
-    // Destruktor
-    ~ResourceManager() = default;
+    ResourceManager& operator=(ResourceManager&&) noexcept = default;
 
 private:
-    Resource resource_;
+    std::unique_ptr< Resource > resource_;
 };
